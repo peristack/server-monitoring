@@ -70,7 +70,7 @@ Credenciales por defecto: `admin / admin` — **recomiendo cambiarlas inmediatam
 
 Instala estos mods en tu servidor Fabric:
 
-- [Spark](https://modrinth.com/mod/spark) — profiler de rendimiento, proporciona TPS y MSPT
+- [Spark](https://modrinth.com/mod/spark) — proveedor de métricas de rendimiento, proporciona TPS y MSPT
 - [FabricExporter](https://modrinth.com/mod/fabricexporter) — expone métricas en formato Prometheus
 
 FabricExporter escucha en el puerto 25585 por defecto. Actualiza `prometheus/prometheus.yml` con la dirección de tu servidor.
