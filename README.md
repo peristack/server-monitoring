@@ -8,10 +8,10 @@ I'm a telecoms engineering student getting into infrastructure. I wanted to work
 
 ## What it does
 
-![Minecraft dashboard](![captura1](https://github.com/user-attachments/assets/4e5a746c-a2e7-4da9-92ea-09e703209f57))
+![Minecraft dashboard](![captura1](https://github.com/user-attachments/assets/4e5a746c-a2e7-4da9-92ea-09e703209f57)
 *Minecraft server dashboard — TPS, MSPT, players and entities in real time*
 
-![Node Exporter dashboard](![captura2](https://github.com/user-attachments/assets/a5462a0a-d338-4d81-badc-351bc6fd78aa))
+![Node Exporter dashboard](![captura2](https://github.com/user-attachments/assets/a5462a0a-d338-4d81-badc-351bc6fd78aa)
 *System dashboard — CPU, RAM, network and disk*
 
 - Collects system metrics (CPU, RAM, disk, network) from the host using Node Exporter
