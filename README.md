@@ -5,6 +5,8 @@
 ![Oracle Cloud](https://img.shields.io/badge/Oracle_Cloud-F80000?logo=oracle&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu_20.04-E95420?logo=ubuntu&logoColor=white)
 
+🌐 [Español](README.es.md)
+
 A monitoring stack I've built to learn how Prometheus and Grafana work in practice, using a real OracleCloud server I already had running.
 
 ## Background
