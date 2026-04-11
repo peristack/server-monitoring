@@ -17,11 +17,11 @@ Soy un estudiante de ingeniería de telecomunicaciones metiéndome en el mundo d
 ## Qué hace
 
 ![Minecraft dashboard](https://github.com/user-attachments/assets/4e5a746c-a2e7-4da9-92ea-09e703209f57)
-*Minecraft server dashboard — TPS, MSPT, players and entities in real time*
+*Panel de control de Minecraft — TPS, MSPT, players y entidades en tiempo real*
 
 
 ![Node Exporter dashboard](https://github.com/user-attachments/assets/a5462a0a-d338-4d81-badc-351bc6fd78aa)
-*System dashboard — CPU, RAM, network and disk*
+*Panel de control del sistema — CPU, RAM, red y disco*
 
 - Recoge métricas del sistema (CPU, RAM, disco, red) desde el host usando Node Exporter
 - Recoge métricas específicas del servidor de Minecraft (TPS, MSPT, jugadores online, entidades cargadas) usando FabricExporter + Spark
