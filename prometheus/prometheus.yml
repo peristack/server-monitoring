@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          instance: 'oracle-cloud'
+
+  - job_name: 'minecraft'
+    static_configs:
+      - targets: ['172.17.0.1:25585']
+        labels:
+          instance: 'minecraft-server'
