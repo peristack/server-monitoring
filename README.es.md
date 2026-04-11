@@ -8,7 +8,7 @@
 🌐 [English](README.md)
 🌐 [Español](README.es.md)
 
-Un stack de monitorización que he montado para aprender cómo funcionan Prometheus y Grafana en la práctica, usando un servidor real en Oracle Cloud que ya tenía en marcha.
+Este es un stack de monitorización que he montado para aprender cómo funcionan Prometheus y Grafana en la práctica, usando un servidor real en Oracle Cloud que ya tenía en marcha.
 
 ## Contexto
 
