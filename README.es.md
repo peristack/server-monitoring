@@ -58,11 +58,11 @@ Prometheus y Node Exporter se comunican internamente a través de la red de Dock
 - Puerto 3000 abierto en el firewall (interfaz de Grafana)
 
 ### Arrancarlo
-
-    git clone https://github.com/peristack/server-monitoring
-    cd server-monitoring
-    docker compose up -d
-
+```bash
+git clone https://github.com/peristack/server-monitoring
+cd server-monitoring
+docker compose up -d
+```
 Grafana estará disponible en `http://ip-de-tu-servidor:3000`.
 Credenciales por defecto: `admin / admin` — **recomiendo cambiarlas inmediatamente y si es posible, activar 2FA o algo similar**.
 
