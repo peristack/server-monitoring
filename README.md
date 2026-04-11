@@ -23,6 +23,7 @@ I'm a telecoms engineering student getting into infrastructure. I wanted to work
 - **Oracle Cloud** — where it runs (Ubuntu 20.04, ARM)
 
 ## Architecture
+```
 Browser
 │
 └── :3000  →  Grafana
@@ -30,6 +31,7 @@ Browser
 Prometheus  ←──  Node Exporter  (system metrics)
 │
 └──────────  FabricExporter  (Minecraft metrics, via Crafty Controller)
+```
 Prometheus and Node Exporter communicate internally via Docker networking — no extra ports exposed.
 
 ## Setup
