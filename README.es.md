@@ -12,7 +12,7 @@ Un stack de monitorización que he montado para aprender cómo funcionan Prometh
 
 ## Contexto
 
-Soy estudiante de ingeniería de telecomunicaciones metiéndome en el mundo de la infraestructura. Quería trabajar con herramientas que resuelven problemas reales. Además, hice algo de investigación por mi cuenta para entender de qué iba todo el hype de Prometheus y Grafana más allá de leer documentación — así que usé una VM en Oracle Cloud que ya tenía (que corre un servidor de Minecraft) como objetivo a monitorizar. Ha acabado siendo una buena excusa para aprender Docker Compose en condiciones.
+Soy un estudiante de ingeniería de telecomunicaciones metiéndome en el mundo de las infraestructuras. Quería trabajar con herramientas que resuelven problemas reales. Además, hice algo de investigación por mi cuenta para entender cómo funciona Prometheus y Grafana, más allá de simplemente leer documentación — así que usé una VM en Oracle Cloud que ya tenía (que corre un servidor de Minecraft) como objetivo a monitorizar. Al final el servidor de Minecraft es la excusa para aprender Docker Compose en condiciones.
 
 ## Qué hace
 
@@ -85,8 +85,8 @@ Impórtalos desde la librería de dashboards de Grafana:
 
 ## Notas
 
-Este es un proyecto de aprendizaje, no está preparado para un entorno de producción real. Algunas cosas que mejoraría con más tiempo:
+Este es un proyecto de aprendizaje, no está preparado para un entorno real. Algunas cosas que mejoraría con más tiempo:
 
-- Añadir Alertmanager para recibir notificaciones cuando el TPS baje o el disco se llene
+- Añadir AlertManager para recibir notificaciones cuando el TPS baje o el disco se llene
 - Configurar autenticación más robusta más allá del login básico de Grafana
 - Usar variables de entorno para los secretos en lugar de ponerlos directamente en los ficheros de configuración
