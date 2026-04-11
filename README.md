@@ -44,11 +44,11 @@ Prometheus and Node Exporter communicate internally via Docker networking — no
 
 ### Run it
 
-\`\`\`bash
+```bash
 git clone https://github.com/peristack/server-monitoring
 cd server-monitoring
 docker compose up -d
-\`\`\`
+```
 
 Grafana will be available at \`http://your-server-ip:3000\`.
 Default credentials: \`admin / admin\` — **I recommend changing these immediately and if possible, enabling 2FA or something similar**.
