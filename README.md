@@ -12,7 +12,7 @@ A monitoring stack I've built to learn how Prometheus and Grafana work in practi
 
 ## Background
 
-I'm a telecoms engineering student getting into infrastructure. I wanted to work with tools that are able to solve real problems. In addition, I've done some infrastructure research on my own to understand what Prometheus + Grafana were actually about beyond just reading docs — so I used an Oracle Cloud VM I already had (which runs a Minecraft server) as the target to monitor. It has ended up being a good excuse to learn Docker Compose properly too.
+I'm a telecoms engineering student getting into infrastructure. I wanted to work with tools that are able to solve real problems. In addition, I've done some infrastructure research on my own to understand what Prometheus + Grafana were actually about beyond just reading docs so I used an Oracle Cloud VM I already had (which runs a Minecraft server) as the target to monitor. It has ended up being a good excuse to learn Docker Compose properly too.
 
 ## What it does
 
@@ -90,7 +90,7 @@ Import these from Grafana's dashboard library:
 - How Prometheus classifies different types of metrics and why it matters
 - How Grafana connects to data sources and how dashboard variables work
 - Docker networking between containers (why \`container_name:port\` works internally)
-- Basic cloud security — keeping internal services off public ports
+- Basic cloud security, keeping internal services off public ports
 
 ## Notes
 
