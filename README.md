@@ -5,14 +5,13 @@
 ![Oracle Cloud](https://img.shields.io/badge/Oracle_Cloud-F80000?logo=oracle&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu_20.04-E95420?logo=ubuntu&logoColor=white)
 
-🌐 [English](README.md)
-🌐 [Español](README.es.md)
+🌐 **English** | [Español](README.es.md)
 
-A monitoring stack I've built to learn how Prometheus and Grafana work in practice, using a real OracleCloud server I already had running.
+A monitoring stack I've built to learn how Prometheus and Grafana work in practice, using a real Oracle Cloud server I already had running.
 
 ## Background
 
-I'm a telecoms engineering student getting into infrastructure. I wanted to work with tools that are able to solve real problems. In addition, I've done some infrastructure research on my own to understand what Prometheus + Grafana were actually about beyond just reading docs so I used an Oracle Cloud VM I already had (which runs a Minecraft server) as the target to monitor. It has ended up being a good excuse to learn Docker Compose properly too.
+I'm a telecoms engineering student getting into infrastructure. I wanted to work with tools that are able to solve real problems. In addition, I've done some infrastructure research on my own to understand what Prometheus + Grafana were actually about beyond just reading docs, so I used an Oracle Cloud VM I already had (which runs a Minecraft server) as the target to monitor. It has ended up being a good excuse to learn Docker Compose properly too.
 
 ## What it does
 
@@ -38,16 +37,18 @@ I'm a telecoms engineering student getting into infrastructure. I wanted to work
 - **Oracle Cloud** — where it runs (Ubuntu 20.04, ARM)
 
 ## Architecture
-```
+
+```text
 Browser
-│
-└── :3000  →  Grafana
-│
-Prometheus  ←──  Node Exporter  (system metrics)
-│
-└──────────  FabricExporter  (Minecraft metrics, via Crafty Controller)
+  │
+  └── :3000  →  Grafana
+                  │
+              Prometheus  ←──  Node Exporter   (system metrics)
+                  │
+                  └──────────  FabricExporter  (Minecraft metrics, via Crafty Controller)
 ```
-Prometheus and Node Exporter communicate internally via Docker networking — no extra ports exposed.
+
+Only Grafana (port 3000) is published to the outside. Prometheus is bound to `127.0.0.1` and Node Exporter isn't published at all — they talk to each other over the internal Docker network.
 
 ## Setup
 
@@ -55,18 +56,27 @@ Prometheus and Node Exporter communicate internally via Docker networking — no
 
 - Docker and Docker Compose installed
 - A Fabric Minecraft server (if you want the Minecraft dashboard)
-- Ports 3000 open on your firewall (Grafana UI)
+- Port 3000 open on your firewall (Grafana UI)
 
 ### Run it
 
 ```bash
 git clone https://github.com/peristack/server-monitoring
 cd server-monitoring
+cp .env.example .env   # then edit .env and set a strong GRAFANA_ADMIN_PASSWORD
 docker compose up -d
 ```
 
-Grafana will be available at \`http://your-server-ip:3000\`.
-Default credentials: \`admin / admin\` — **I recommend changing these immediately and if possible, enabling 2FA or something similar**.
+Grafana will be available at `http://your-server-ip:3000`. Log in with the user and password you set in `.env`. The Prometheus data source is provisioned automatically.
+
+> [!NOTE]
+> Grafana only reads `GRAFANA_ADMIN_PASSWORD` the first time it starts. To change it later, use the Grafana UI or run `docker exec -it grafana grafana cli admin reset-admin-password <new-password>`.
+
+To open the Prometheus UI, use an SSH tunnel and browse to `http://localhost:9090`:
+
+```bash
+ssh -L 9090:localhost:9090 user@your-server-ip
+```
 
 ### Minecraft metrics (optional)
 
@@ -75,27 +85,27 @@ Install these mods on your Fabric server:
 - [Spark](https://modrinth.com/mod/spark) — performance profiler, provides TPS and MSPT
 - [FabricExporter](https://modrinth.com/mod/fabricexporter) — exposes metrics in Prometheus format
 
-FabricExporter listens on port 25585 by default. Update \`prometheus/prometheus.yml\` with your server's address.
+FabricExporter listens on port 25585 by default. Prometheus reaches it on the host through `host.docker.internal:25585`; if your server runs somewhere else, update `prometheus/prometheus.yml` with its address. Don't open port 25585 on your firewall — only Prometheus needs to reach it.
 
 ### Dashboards
 
 Import these from Grafana's dashboard library:
 
-- **Node Exporter Full** — ID \`1860\` (system metrics)
-- **Minecraft Fabric** — ID \`14492\` (game metrics)
+- **Node Exporter Full** — ID `1860` (system metrics)
+- **Minecraft Fabric** — ID `14492` (game metrics)
 
 ## What I learned
 
 - How Prometheus scraping works and how to configure targets
 - How Prometheus classifies different types of metrics and why it matters
 - How Grafana connects to data sources and how dashboard variables work
-- Docker networking between containers (why \`container_name:port\` works internally)
-- Basic cloud security, keeping internal services off public ports
+- Docker networking between containers (why `container_name:port` works internally)
+- Basic cloud security: keeping internal services off public ports
 
 ## Notes
 
-This is a learning project, not battle-tested for real world use. A few things I'd improve with more time:
+This is a learning project, not battle-tested for real-world use. A few things I'd improve with more time:
 
 - Add Alertmanager for notifications when TPS drops or disk fills up
 - Set up proper authentication beyond basic Grafana login
-- Use environment variables for secrets instead of hardcoding in compose files
+- Put Grafana behind a reverse proxy with HTTPS

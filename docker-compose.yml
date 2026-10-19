@@ -1,38 +1,48 @@
 services:
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v3.15.0
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
     ports:
-      - "9090:9090"
+      # Localhost only: Prometheus has no authentication. Use an SSH tunnel to open its UI.
+      - "127.0.0.1:9090:9090"
+    extra_hosts:
+      # Lets Prometheus reach exporters running on the host (FabricExporter)
+      - "host.docker.internal:host-gateway"
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.12.1
     container_name: node-exporter
     restart: unless-stopped
     pid: host
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-      - /:/rootfs:ro
+      - /:/rootfs:ro,rslave
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:13.2.4
     container_name: grafana
     restart: unless-stopped
+    depends_on:
+      - prometheus
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD in .env (see .env.example)}
+      - GF_USERS_ALLOW_SIGN_UP=false
 
 volumes:
   prometheus_data:
