@@ -19,7 +19,7 @@ I'm a telecoms engineering student getting into infrastructure. I wanted to work
 *Minecraft server dashboard — TPS, MSPT, players and entities in real time*
 
 
-![Node Exporter dashboard](https://github.com/user-attachments/assets/a5462a0a-d338-4d81-badc-351bc6fd78aa)
+![Node Exporter dashboard](docs/node-exporter-dashboard.png)
 *System dashboard — CPU, RAM, network and disk*
 
 - Collects system metrics (CPU, RAM, disk, network) from the host using Node Exporter
@@ -49,6 +49,9 @@ Browser
 ```
 
 Only Grafana (port 3000) is published to the outside. Prometheus is bound to `127.0.0.1` and Node Exporter isn't published at all — they talk to each other over the internal Docker network.
+
+![Prometheus targets](docs/prometheus-targets.webp)
+*Prometheus targets — both exporters up and being scraped*
 
 ## Setup
 

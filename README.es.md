@@ -19,7 +19,7 @@ Soy un estudiante de ingeniería de telecomunicaciones metiéndome en el mundo d
 *Panel de control de Minecraft — TPS, MSPT, jugadores y entidades en tiempo real*
 
 
-![Node Exporter dashboard](https://github.com/user-attachments/assets/a5462a0a-d338-4d81-badc-351bc6fd78aa)
+![Node Exporter dashboard](docs/node-exporter-dashboard.png)
 *Panel de control del sistema — CPU, RAM, red y disco*
 
 - Recoge métricas del sistema (CPU, RAM, disco, red) desde el host usando Node Exporter
@@ -49,6 +49,9 @@ Navegador
 ```
 
 Solo Grafana (puerto 3000) está publicado hacia fuera. Prometheus escucha únicamente en `127.0.0.1` y Node Exporter no publica ningún puerto — se comunican entre ellos por la red interna de Docker.
+
+![Prometheus targets](docs/prometheus-targets.webp)
+*Targets de Prometheus — los dos exporters activos y recogiendo datos*
 
 ## Instalación
 
