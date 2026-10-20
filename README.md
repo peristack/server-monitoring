@@ -19,7 +19,7 @@ I'm a telecoms engineering student getting into infrastructure. I wanted to work
 *Minecraft server dashboard — TPS, MSPT, players and entities in real time*
 
 
-![Node Exporter dashboard](https://github.com/user-attachments/assets/a5462a0a-d338-4d81-badc-351bc6fd78aa)
+![Node Exporter dashboard](docs/node-exporter-dashboard.png)
 *System dashboard — CPU, RAM, network and disk*
 
 - Collects system metrics (CPU, RAM, disk, network) from the host using Node Exporter
