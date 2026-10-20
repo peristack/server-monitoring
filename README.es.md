@@ -5,14 +5,13 @@
 ![Oracle Cloud](https://img.shields.io/badge/Oracle_Cloud-F80000?logo=oracle&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu_20.04-E95420?logo=ubuntu&logoColor=white)
 
-🌐 [English](README.md)
-🌐 [Español](README.es.md)
+🌐 [English](README.md) | **Español**
 
 Este es un stack de monitorización que he montado para aprender cómo funcionan Prometheus y Grafana en la práctica, usando un servidor real en Oracle Cloud que ya tenía en marcha.
 
 ## Contexto
 
-Soy un estudiante de ingeniería de telecomunicaciones metiéndome en el mundo de las infraestructuras. Quería trabajar con herramientas que resuelven problemas reales. Además, hice algo de investigación por mi cuenta para entender cómo funciona Prometheus y Grafana, más allá de simplemente leer documentación — así que usé una VM en Oracle Cloud que ya tenía (que corre un servidor de Minecraft) como objetivo a monitorizar. Al final el servidor de Minecraft es la excusa para aprender Docker Compose en condiciones.
+Soy un estudiante de ingeniería de telecomunicaciones metiéndome en el mundo de las infraestructuras. Quería trabajar con herramientas que resuelven problemas reales. Además, hice algo de investigación por mi cuenta para entender cómo funcionan Prometheus y Grafana, más allá de simplemente leer documentación — así que usé una VM en Oracle Cloud que ya tenía (que corre un servidor de Minecraft) como objetivo a monitorizar. Al final el servidor de Minecraft es la excusa para aprender Docker Compose en condiciones.
 
 ## Qué hace
 
@@ -39,15 +38,17 @@ Soy un estudiante de ingeniería de telecomunicaciones metiéndome en el mundo d
 
 ## Arquitectura
 
-    Browser
-      │
-      └── :3000  →  Grafana
-                      │
-                  Prometheus  ←──  Node Exporter  (métricas del sistema)
-                      │
-                      └──────────  FabricExporter  (métricas de Minecraft, via Crafty Controller)
+```text
+Navegador
+  │
+  └── :3000  →  Grafana
+                  │
+              Prometheus  ←──  Node Exporter   (métricas del sistema)
+                  │
+                  └──────────  FabricExporter  (métricas de Minecraft, vía Crafty Controller)
+```
 
-Prometheus y Node Exporter se comunican internamente a través de la red de Docker — ningún puerto extra expuesto al exterior.
+Solo Grafana (puerto 3000) está publicado hacia fuera. Prometheus escucha únicamente en `127.0.0.1` y Node Exporter no publica ningún puerto — se comunican entre ellos por la red interna de Docker.
 
 ## Instalación
 
@@ -58,13 +59,24 @@ Prometheus y Node Exporter se comunican internamente a través de la red de Dock
 - Puerto 3000 abierto en el firewall (interfaz de Grafana)
 
 ### Arrancarlo
+
 ```bash
 git clone https://github.com/peristack/server-monitoring
 cd server-monitoring
+cp .env.example .env   # después edita .env y pon una GRAFANA_ADMIN_PASSWORD segura
 docker compose up -d
 ```
-Grafana estará disponible en `http://ip-de-tu-servidor:3000`.
-Credenciales por defecto: `admin / admin` — **recomiendo cambiarlas inmediatamente y si es posible, activar 2FA o algo similar**.
+
+Grafana estará disponible en `http://ip-de-tu-servidor:3000`. Inicia sesión con el usuario y la contraseña que hayas puesto en `.env`. La fuente de datos de Prometheus se configura automáticamente.
+
+> [!NOTE]
+> Grafana solo lee `GRAFANA_ADMIN_PASSWORD` la primera vez que arranca. Para cambiarla después, hazlo desde la interfaz de Grafana o ejecuta `docker exec -it grafana grafana cli admin reset-admin-password <nueva-contraseña>`.
+
+Para abrir la interfaz de Prometheus, usa un túnel SSH y entra en `http://localhost:9090`:
+
+```bash
+ssh -L 9090:localhost:9090 usuario@ip-de-tu-servidor
+```
 
 ### Métricas de Minecraft (opcional)
 
@@ -73,7 +85,7 @@ Instala estos mods en tu servidor Fabric:
 - [Spark](https://modrinth.com/mod/spark) — proveedor de métricas de rendimiento, proporciona TPS y MSPT
 - [FabricExporter](https://modrinth.com/mod/fabricexporter) — expone métricas en formato Prometheus
 
-FabricExporter escucha en el puerto 25585 por defecto. Actualiza `prometheus/prometheus.yml` con la dirección de tu servidor.
+FabricExporter escucha en el puerto 25585 por defecto. Prometheus lo alcanza en el host a través de `host.docker.internal:25585`; si tu servidor está en otra máquina, actualiza `prometheus/prometheus.yml` con su dirección. No abras el puerto 25585 en el firewall — solo Prometheus necesita acceder a él.
 
 ### Dashboards
 
@@ -88,12 +100,12 @@ Impórtalos desde la librería de dashboards de Grafana:
 - Cómo clasifica Prometheus los diferentes tipos de métricas y por qué importa
 - Cómo conecta Grafana con fuentes de datos y cómo funcionan las variables de los dashboards
 - Redes Docker entre contenedores (por qué `container_name:port` funciona internamente)
-- Seguridad básica en cloud — mantener los servicios internos fuera de los puertos públicos
+- Seguridad básica en cloud: mantener los servicios internos fuera de los puertos públicos
 
 ## Notas
 
 Este es un proyecto de aprendizaje, no está preparado para un entorno real. Algunas cosas que mejoraría con más tiempo:
 
-- Añadir AlertManager para recibir notificaciones cuando el TPS baje o el disco se llene
-- Configurar autenticación más robusta más allá del login básico de Grafana
-- Usar variables de entorno para los secretos en lugar de ponerlos directamente en los ficheros de configuración
+- Añadir Alertmanager para recibir notificaciones cuando el TPS baje o el disco se llene
+- Configurar una autenticación más robusta que el login básico de Grafana
+- Poner Grafana detrás de un proxy inverso con HTTPS
