@@ -50,6 +50,9 @@ Navegador
 
 Solo Grafana (puerto 3000) está publicado hacia fuera. Prometheus escucha únicamente en `127.0.0.1` y Node Exporter no publica ningún puerto — se comunican entre ellos por la red interna de Docker.
 
+![Prometheus targets](docs/prometheus-targets.webp)
+*Targets de Prometheus — los dos exporters activos y recogiendo datos*
+
 ## Instalación
 
 ### Requisitos previos

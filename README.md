@@ -50,6 +50,9 @@ Browser
 
 Only Grafana (port 3000) is published to the outside. Prometheus is bound to `127.0.0.1` and Node Exporter isn't published at all — they talk to each other over the internal Docker network.
 
+![Prometheus targets](docs/prometheus-targets.webp)
+*Prometheus targets — both exporters up and being scraped*
+
 ## Setup
 
 ### Prerequisites
