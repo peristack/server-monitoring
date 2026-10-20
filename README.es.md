@@ -56,7 +56,7 @@ Solo Grafana (puerto 3000) está publicado hacia fuera. Prometheus escucha únic
 
 - Docker y Docker Compose instalados
 - Un servidor de Minecraft con Fabric (si quieres el dashboard de Minecraft)
-- Puerto 3000 abierto en el firewall (interfaz de Grafana)
+- Puerto 3000 abierto en el firewall (interfaz de Grafana) — ver [Firewall](#firewall-security-list-de-oracle-cloud)
 
 ### Arrancarlo
 
@@ -77,6 +77,21 @@ Para abrir la interfaz de Prometheus, usa un túnel SSH y entra en `http://local
 ```bash
 ssh -L 9090:localhost:9090 usuario@ip-de-tu-servidor
 ```
+
+### Firewall (Security List de Oracle Cloud)
+
+Oracle Cloud bloquea todo el tráfico entrante por defecto, así que cada puerto hay que abrirlo en la Security List de la subred (*Networking → Virtual Cloud Networks → tu VCN → Security Lists → Ingress Rules*). Estas son las reglas que uso:
+
+| Puerto | Protocolo | Origen | Para qué |
+|---|---|---|---|
+| 22 | TCP | `TU_IP/32` | SSH |
+| 3000 | TCP | `TU_IP/32` | Grafana |
+| 25565 | TCP | `0.0.0.0/0` | Minecraft (jugadores) |
+
+No añadas reglas para el 9090 (Prometheus) ni el 25585 (FabricExporter): solo Prometheus necesita acceder a ellos, desde dentro del servidor. Los puertos que publica Docker se saltan UFW, así que es la Security List la que los mantiene privados.
+
+> [!TIP]
+> La IP de casa cambia de vez en cuando. Si de repente el SSH o Grafana dejan de responder, mira tu IP pública actual y actualiza las reglas `/32`.
 
 ### Métricas de Minecraft (opcional)
 
